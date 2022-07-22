@@ -1,13 +1,26 @@
-version: '3.8'
+version: '3.9'
 
-services: 
-  postgres:
-    image: postgres:10.4
-    ports: 
-      - '5428:5432'
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
     restart: always
     env_file:
       - .env
+    ports:
+      - "3600:3000"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:10.4
+    ports: 
+      - "54280:5432"
+    restart: always
+    env_file:
+      - .env
+    network_mode: "host"
     volumes:
       - postgres:/var/lib/postgresql/data
 
